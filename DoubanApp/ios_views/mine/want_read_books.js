@@ -6,8 +6,9 @@ var React = require('react-native');
 var Search = require('./../common/search');
 var Util = require('./../common/util');
 var ServiceURL = require('./../common/service');
-var BookItem = require('./../book/book_item')
+var BookItem = require('./../book/collection_book_item')
 var BookDetail = require('./../book/book_detail');
+var Header = require('./../common/header');
 
 var {
     StyleSheet,
@@ -25,20 +26,19 @@ module.exports = React.createClass({
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2)=> r1 !== r2});
         return {
             dataSource: ds.cloneWithRows([]),
-            keywords: 'React',
             show: false
         };
     },
     render: function () {
         return (
             <ScrollView style={styles.flex_1}>
-                <View style={[styles.search, styles.row]}>
-                    <View style={styles.flex_1}>
-                        <Search placeholder="请输入图书的名称" onChangeText={this._changeText}/>
-                    </View>
-                    <TouchableOpacity style={styles.btn} onPress={this._search}>
-                        <Text style={styles.fontFFF}>搜索</Text>
-                    </TouchableOpacity>
+                <View>
+                    <Header
+                        navigator={this.props.navigator}
+                        initObj={{
+                        backName: this.props.backName,
+                        title: this.props.title
+                      }}/>
                 </View>
                 {
                     this.state.show ?
@@ -58,38 +58,28 @@ module.exports = React.createClass({
     //渲染图书列表项
     _renderRow: function(row){
         return (
-            <BookItem row={row} onPress={this._loadPage.bind(this, row.id)}/>
+            <BookItem row={row} onPress={this._loadPage.bind(this, row.book_id)}/>
         );
     },
 
-    _changeText: function(val){
-        this.setState({
-            keywords: val
-        });
-    },
-
-    _search: function(){
-        this._getData();
-    },
-    //根据关键字查询
     _getData: function(){
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         var that = this;
-        var baseURL = ServiceURL.book_search + '?count=10&q=' + this.state.keywords;
+        var baseURL = ServiceURL.want_read_book;
         //开启loading
         this.setState({
             show: false
         });
         Util.get(baseURL, function(data){
-            if(!data.books || !data.books.length){
+            if(!data.collections || !data.collections.length){
                 that.setState({
                     show: true
                 });
                 return alert('没有相应数据');
             }
-            var books = data.books;
+            var collections = data.collections;
             that.setState({
-                dataSource: ds.cloneWithRows(books),
+                dataSource: ds.cloneWithRows(collections),
                 show: true
             });
         }, function(err){
