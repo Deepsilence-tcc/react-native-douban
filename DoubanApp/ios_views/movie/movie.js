@@ -3,7 +3,7 @@ var React = require('react-native');
 var Search = require('./../common/search');
 var Util = require('./../common/util');
 var ServiceURL = require('./../common/service');
-var webView = require('./../common/webView');
+var WebView = require('./../common/webView');
 
 var {
     StyleSheet,
@@ -126,7 +126,7 @@ module.exports = React.createClass({
 
     _goDouBan: function(title, url){
         this.props.navigator.push({
-            component: webView,
+            component: WebView,
             passProps:{
                 backName: '电影',
                 title: title,

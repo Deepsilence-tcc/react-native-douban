@@ -6,7 +6,7 @@
  var React = require('react-native');
  var Navigation = require('./ios_views/common/navigation');
  var Book = require('./ios_views/book/book_list');
- var Music = require('./ios_views/music/music');
+ var Mine = require('./ios_views/mine/mine');
  var Movie = require('./ios_views/movie/movie');
 
  var {
@@ -54,15 +54,15 @@
          </TabBarIOS.Item>
 
          <TabBarIOS.Item
-           title="音乐"
-           selected={this.state.selectedTab === '音乐'}
-           icon={require('image!music')}
+           title="我的"
+           selected={this.state.selectedTab === '我的'}
+           icon={require('image!about')}
            onPress={() => {
              this.setState({
-               selectedTab: '音乐'
+               selectedTab: '我的'
              });
            }}>
-           <Navigation component={Music}/>
+           <Navigation component={Mine}/>
          </TabBarIOS.Item>
        </TabBarIOS>
      );
