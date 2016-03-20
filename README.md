@@ -1,4 +1,4 @@
-# React-Douban
+# react-native-douban
 基于 React-Native &amp; 豆瓣Open API 
 
 ## 效果演示：
